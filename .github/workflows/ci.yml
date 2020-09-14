@@ -30,14 +30,11 @@ jobs:
       if: steps.composer-cache.outputs.cache-hit != 'true'
       run: composer install --prefer-dist --no-progress --no-suggest
 
+    - name: Install coverage lib
+      run: curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter && chmod +x ./cc-test-reporter && ./cc-test-reporter before-build
+
     - name: Run test suite
       run: composer run-script test
 
     - name: Publish code coverage
-      uses: paambaati/codeclimate-action@v2.6.0
-      env:
-        CC_TEST_REPORTER_ID: 760ec72c0db8359a7b8c34082560a6ab170de9c7c2a3b82a6f34eb0ad2474ba8
-      with:
-        coverageCommand: yarn coverage
-        coverageLocations: |
-          ${{github.workspace}}/build/logs/clover.xml:clover
+      run: ./cc-test-reporter --id 760ec72c0db8359a7b8c34082560a6ab170de9c7c2a3b82a6f34eb0ad2474ba8 format-coverage -t clover -o build/logs/clover.xml
