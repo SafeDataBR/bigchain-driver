@@ -27,5 +27,8 @@
             "BigChainDB\\": "src",
             "BigChainDB\\Tests\\": "tests"
         }
+    },
+    "scripts": {
+        "test": "phpunit"
     }
 }
